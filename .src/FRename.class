@@ -1,0 +1,66 @@
+' Gambas class file
+
+Public NoteFile As String
+Public NotePath As String
+Public NoteTitle As String
+Public NoteImage As String
+
+Public Sub Form_Open()
+  
+  'Center Window
+  Me.Center
+  
+  NoteFile = File.Name(Fmain.ListView_Notes.Key)
+  NotePath = Fmain.ListView_Notes.Key
+  NoteTitle = File.BaseName(NoteFile)
+  NoteImage = Replace(NotePath, ".txt", ".png")
+  
+  TextBox_NoteTitle.Text = NoteTitle
+  
+  If Exist(NoteImage) Then
+    PictureBox_NoteImage.Picture = Image.Load(NoteImage).Picture
+  Endif
+  
+End
+
+Public Sub Button_RenameNote_Click()
+  
+  'Check Note Title For Bad Chars
+  If Not TextBox_NoteTitle.Text = "" Then
+    'Remove Note From ListView_Notes
+    FMain.ListView_Notes.Remove(NotePath)
+   
+    'Rename Note File
+    If Not Exist(Replace(NotePath, NoteFile, TextBox_NoteTitle.Text & ".txt"))
+      Move NotePath To Replace(NotePath, NoteFile, TextBox_NoteTitle.Text & ".txt")
+    Endif
+    
+    'Check for Note Image
+    If Exist(NoteImage)
+      'Delete Note Image
+      Kill NoteImage
+      'Move Replace(NotePath, ".txt", ".png") To Replace(NotePath, NoteTitle, TextBox_NoteTitle.Text & ".png")
+    Endif
+    'Create Note Image 
+    PictureBox_NoteImage.Picture.Image.Stretch(64, 64).Save("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".png")
+    'Add Note To ListView_Notes
+    ' If FMain.ListView_Notes.Exist("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".png") Then
+    FMain.ListView_Notes.Add("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".txt", TextBox_NoteTitle.Text, Image.Load("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".png").Picture)
+    ' Else
+    ' FMain.ListView_Notes.Add("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".txt", TextBox_NoteTitle.Text)
+    ' Endif
+    'Close Window
+    Me.Close
+  Endif
+  
+End
+
+Public Sub PictureBox_NoteImage_MouseDown()
+  
+  Dialog.Title = "Select Image"
+  Dialog.filter = ["*.jpg;*.jpeg;*.png;", "All Files", "*.jpg;*.jpeg", "Joint Photographic Expert Group", "*.png", "Portable Network Graphics"]
+  
+  If Dialog.OpenFile(False) Then Return
+  PictureBox_NoteImage.Picture = Picture.Load(Dialog.Path)
+  
+End

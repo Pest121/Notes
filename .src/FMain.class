@@ -1,0 +1,103 @@
+' Gambas class file
+
+Public Sub Form_Open()
+  
+  'Center Window
+  Me.Center
+  
+  'Check for Notes Dir
+  If Not Exist("~/Documents/Notes") Then
+    Mkdir "~/Documents/Notes"
+  Endif
+  
+  'Load Notes
+  Load_Notes()
+  
+End
+
+Public Sub Button_AddNote_Click()
+  
+  FAddNote.ShowDialog
+  
+End
+
+Public Sub Button_RenameNote_Click()
+  
+  'If selected on item
+  If Not ListView_Notes.Key = "" Then
+    FRename.ShowDialog
+  Endif
+  
+End
+
+Public Sub Button_DeleteNote_Click()
+  
+  Dim NoteToDelete As String
+  
+  'If selected on item
+  If Not ListView_Notes.Key = "" Then
+    NoteToDelete = ListView_Notes.Key
+    'Ask user if they are sure they want to delete the selected note
+    If Message.Question("Delete Selected Note, Are you Sure?", "Yes", "No") = 1 Then
+      'Delete Note File 
+      Kill NoteToDelete
+      'Delete Note Image
+      Kill Replace(NoteToDelete, ".txt", ".png")
+      'Remove From List
+      ListView_Notes.Remove(NoteToDelete)
+      'Removed msg
+      Message.Info("Note has been removed.")
+    Endif
+  End If
+  
+End
+
+Public Sub ListView_Notes_DblClick()
+  
+  Dim hWindow As Window
+  Dim FNotes As Window
+  Dim OpenedWindow As String
+  
+  If Not ListView_Notes.Key = "" Then
+    For Each hWindow In Windows
+      OpenedWindow = Replace(hWindow.Text, " - Notes", "")
+      If ListView_Notes.Current.Text = OpenedWindow Or If "*" & ListView_Notes.Current.Text = OpenedWindow Then
+        Return
+      Endif
+    Next
+    
+    FNotes = New FNote
+    FNotes.Show
+    
+  Endif
+  
+End
+
+Public Sub Load_Notes()
+  
+  Dim Directory As String
+  Dim Files As String[]
+  Dim FileName As String
+  Dim ImageName As String 
+  
+  ListView_Notes.Clear
+  
+  Directory = "~/Documents/Notes/"
+  Files = Dir(Directory, "*.txt")
+  ' Files.Insert(Dir(Directory, "*.jpg"))
+  ' Files.Insert(Dir(Directory, "*.jpeg"))
+  
+  For Each FileName In Files
+    If Not ListView_Notes.Exist("~/Documents/Notes/" & FileName) Then
+      ImageName = "~/Documents/Notes/" & Replace(FileName, ".txt", ".png")
+      If Exist(ImageName) Then
+        'Add To list with image
+        ListView_Notes.Add("~/Documents/Notes/" & FileName, File.BaseName(FileName), Image.Load(ImageName).Picture)
+      Else
+        'Add To list without image
+        ListView_Notes.Add("~/Documents/Notes/" & FileName, File.BaseName(FileName))
+      Endif
+    Endif
+  Next
+  
+End

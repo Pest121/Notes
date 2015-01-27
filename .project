@@ -1,0 +1,12 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.6.2
+Title=Notes
+Startup=FMain
+Icon=note-icon.png
+Version=0.0.2
+Component=gb.image
+Component=gb.qt4
+Component=gb.form
+Component=gb.qt4.ext
+TabSize=2
+Packager=1

@@ -1,0 +1,43 @@
+' Gambas class file
+
+Public Sub Form_Open()
+  
+  'Center Window
+  Me.Center
+  
+End
+
+Public Sub Button_AddNote_Click()
+  
+  'Check Note Title For Bad Chars
+  If Not TextBox_NoteTitle.Text = "" Then
+    'Check Main.ListView_Notes for Note Title
+    If Not FMain.ListView_Notes.Exist("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".txt") Then
+      'Create Note File
+      PictureBox_NoteImage.Picture.Image.Stretch(64, 64).Save("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".png")
+      'Create Note Image 
+      File.Save("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".txt", "")  
+      'Add Note To ListView_Notes
+      If Not FMain.ListView_Notes.Exist("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".png") Then
+        'Add To list with image
+        FMain.ListView_Notes.Add("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".txt", TextBox_NoteTitle.Text, Image.Load("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".png").Picture)
+      Else
+        'Add To list without image
+        FMain.ListView_Notes.Add("~/Documents/Notes/" & TextBox_NoteTitle.Text & ".txt", TextBox_NoteTitle.Text)
+      Endif
+      'Close Window
+      Me.Close
+    Endif
+  Endif
+  
+End
+
+Public Sub PictureBox_NoteImage_MouseDown()
+  
+  Dialog.Title = "Select Image"
+  Dialog.filter = ["*.jpg;*.jpeg;*.png;", "All Files", "*.jpg;*.jpeg", "Joint Photographic Expert Group", "*.png", "Portable Network Graphics"]
+  
+  If Dialog.OpenFile(False) Then Return
+  PictureBox_NoteImage.Picture = Picture.Load(Dialog.Path)
+  
+End

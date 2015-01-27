@@ -1,0 +1,74 @@
+' Gambas class file
+
+Public NoteFile As String
+Public NoteTitle As String 
+Public NotePath As String
+Public NoteImage As String
+Public SavedNote As String = ""
+Public MSG_UnSaved As String 
+
+Public Sub Form_Open()
+  
+  'Center Window
+  Me.Center
+  
+  NoteFile = File.Name(Fmain.ListView_Notes.Key)
+  NotePath = Fmain.ListView_Notes.Key
+  SavedNote = File.Load(NotePath)
+  NoteTitle = File.BaseName(NoteFile)
+  NoteImage = Replace(Fmain.ListView_Notes.Key, ".txt", ".png")
+  TextArea_Note.Text = File.Load(NotePath)
+  
+  Label_NoteTitle.Text = NoteTitle
+  If Exist(NoteImage) Then
+    PictureBox_NoteImage.Picture = Image.Load(NoteImage).Picture
+  Endif
+  
+  MSG_UnSaved = "The file '" & NoteTitle & "' is not saved.\n" "Do you want to save it before closing?"
+  
+End
+
+Public Sub ToolButton_SaveNote_Click()
+  
+  File.Save("~/Documents/Notes/" & NoteFile, TextArea_Note.Text)
+  
+  SavedNote = TextArea_Note.Text
+  Me.Text = NoteTitle & " - Notes"
+  PictureBox1.Picture = Picture["icon:/64/ok"]
+  
+End
+
+Public Sub TextArea_Note_Change()
+  
+  If TextArea_Note.Text <> SavedNote Then
+    Me.Text = "*" & NoteTitle & " - Notes"
+    PictureBox1.Picture = Picture["icon:/64/warning"]
+  Else
+    Me.Text = NoteTitle & " - Notes"
+    PictureBox1.Picture = Picture["icon:/64/ok"]
+  Endif
+  
+End
+
+Public Sub Form_Close()
+  
+  Dim intQuestion As Integer
+  
+  If TextArea_Note.Text <> SavedNote Then
+    intQuestion = Message.Question(MSG_UnSaved, "Yes", "No", "Cancel") 
+    If intQuestion = 1 Then
+      File.Save("~/Documents/Notes/" & NoteTitle, TextArea_Note.Text)
+    Else If intQuestion = 2
+      'Do Nothing
+    Else If intQuestion = 3
+      Stop Event
+    Endif
+  Endif
+  
+End
+
+Public Sub PictureBox_NoteImage_MouseDown()
+
+  FMain.Show
+
+End

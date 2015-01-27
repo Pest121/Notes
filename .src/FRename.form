@@ -1,0 +1,24 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,41,13)
+  Text = ("Rename Note")
+  Icon = Picture["note-icon.png"]
+  Resizable = False
+  { TextBox_NoteTitle TextBox
+    MoveScaled(11,3,29,4)
+  }
+  { Label_NoteTitle Label
+    MoveScaled(12,0,14,4)
+    Text = ("Note Title")
+  }
+  { PictureBox_NoteImage PictureBox
+    MoveScaled(1,2,9.1429,9.1429)
+    Picture = Picture["Note.png"]
+    Border = Border.Plain
+  }
+  { Button_RenameNote Button
+    MoveScaled(11,8,17,4)
+    Text = ("Rename Note")
+  }
+}

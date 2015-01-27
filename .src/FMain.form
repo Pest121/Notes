@@ -1,0 +1,27 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,51,50)
+  Text = ("Notes")
+  Icon = Picture["note-icon.png"]
+  Resizable = False
+  { Button_AddNote Button
+    MoveScaled(1,45,15,4)
+    Text = ("Add Note")
+    Picture = Picture["icon:/16/new"]
+  }
+  { Button_RenameNote Button
+    MoveScaled(17,45,16,4)
+    Text = ("Rename Note")
+    Picture = Picture["icon:/16/wizard"]
+  }
+  { Button_DeleteNote Button
+    MoveScaled(34,45,16,4)
+    Text = ("Delete Note")
+    Picture = Picture["icon:/16/delete"]
+  }
+  { !ListView_Notes ListView
+    MoveScaled(1,1,49,43)
+    #Public = True
+  }
+}

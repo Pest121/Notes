@@ -1,0 +1,48 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,97,86)
+  Text = ("Note")
+  Icon = Picture["note-icon.png"]
+  Arrangement = Arrange.Vertical
+  { Panel3 HBox
+    MoveScaled(0,0,97,11)
+    { PictureBox_NoteImage PictureBox
+      MoveScaled(0,0,11,11)
+      Mouse = Mouse.Pointing
+      Picture = Picture["Note.png"]
+      Alignment = Align.Center
+    }
+    { Label_NoteTitle Label
+      MoveScaled(11,0,75,11)
+      Font = Font["Bold,+1"]
+      Expand = True
+      Text = ("Note Title")
+    }
+    { PictureBox1 PictureBox
+      MoveScaled(86,0,11,11)
+      Picture = Picture["icon:/64/ok"]
+      Alignment = Align.Center
+    }
+  }
+  { Panel2 Panel
+    MoveScaled(0,11,97,68)
+    Expand = True
+    Arrangement = Arrange.Fill
+    Border = Border.Plain
+    { TextArea_Note TextArea
+      MoveScaled(1,1,16,15)
+      Expand = True
+      Border = False
+    }
+  }
+  { Panel1 Panel
+    MoveScaled(0,79,97,7)
+    Arrangement = Arrange.Horizontal
+    { ToolButton_SaveNote ToolButton
+      MoveScaled(0,0,10,7)
+      Expand = True
+      Picture = Picture["icon:/32/save"]
+    }
+  }
+}
